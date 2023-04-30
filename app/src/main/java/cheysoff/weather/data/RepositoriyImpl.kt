@@ -30,7 +30,6 @@ object RepositoriyImpl : Repositoriy {
             val latitudeString = getNextWordAfterTriggerWord(responseBodyString, "\"lat\"")
             latitude = latitudeString?.substring(1, latitudeString.length - 1)?.toDoubleOrNull()
                 ?: EMPTY_LAT
-
             val longitudeString = getNextWordAfterTriggerWord(responseBodyString, "\"lon\"")
             longitude =
                 longitudeString?.substring(1, longitudeString.length - 1)?.toDoubleOrNull()
@@ -46,7 +45,11 @@ object RepositoriyImpl : Repositoriy {
         }
     }
 
-    override suspend fun getWeatherByCoordinates(city: City, days: Int, param: String): RequestState {
+    override suspend fun getWeatherByCoordinates(
+        city: City,
+        days: Int,
+        param: String
+    ): RequestState {
         val url =
             "https://api.open-meteo.com/v1/forecast?" +
                     "latitude=${city.latitude}" +
@@ -106,7 +109,7 @@ object RepositoriyImpl : Repositoriy {
         val textStream = text.substring(startIndex).split("[,\\]]".toRegex()).toTypedArray()
         var daysPassed = 0
         for (token in textStream) {
-            if(daysPassed >= days) {
+            if (daysPassed >= days) {
                 break
             }
             Log.d("weat", token)
